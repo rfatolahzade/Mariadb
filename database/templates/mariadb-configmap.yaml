@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb-config
+data:
+  mariadb_user: "admin"
+  mariadb_database: "mariadb"
+  allow_empty_password: "yes"
