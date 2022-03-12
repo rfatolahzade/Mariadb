@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      nodeSelector:
+        app: master
+      containers:
+        - image: bitnami/mariadb:10.1
+          name: mariadb
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: mariadb-config
+                  key: allow_empty_password
+
+            - name: MARIADB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: mariadb-config
+                  key: mariadb_user
+
+            - name: MARIADB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: mariadb-config
+                  key: mariadb_database
+            - name: MARIADB_PORT_NUMBER
+              value: "3306"
+            - name: MARIADB_HOST
+              value: "185.235.43.124"
+          volumeMounts:
+            - name: mariadb-volume
+              mountPath: /data/db
+      volumes:
+        - name: mariadb-volume
+          persistentVolumeClaim:
+            claimName: mariadb-pvc

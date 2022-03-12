@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: mariadb-galera
+  name: mariadb-galera-pvc
+  namespace: mariadb-galera
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: rook-ceph-retain-bucket
+  volumeMode: Filesystem
+  volumeName: mariadb-galera-pv
